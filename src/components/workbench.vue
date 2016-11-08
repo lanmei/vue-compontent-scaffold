@@ -7,7 +7,7 @@
 
 <script>
 import 'normalize.css';
-import 'assets/vendor/font-awesome.css';
+import 'assets/vendor/bootstrap/css/font-awesome.css';
 
 import WorkHeader from './workbench/WorkHeader';
 import WorkContainer from './workbench/WorkContainer';

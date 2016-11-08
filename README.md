@@ -16,7 +16,6 @@
 ## 安装运行
 
 ```
-$ cd ./alm-fed
 $ npm install
 $ npm run dev
 ```
