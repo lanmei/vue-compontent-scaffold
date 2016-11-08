@@ -1,0 +1,4 @@
+node_modules/*
+dist/*
+test/unit/coverage/*
+src/assets/vendor/bootstrap/*
