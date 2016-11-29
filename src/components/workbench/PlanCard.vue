@@ -45,7 +45,6 @@ export default {
         this.$http.get(config.devPlanUrl).then((response) => {
             // request success
             this.rows = response.data.rows;
-            console.log(this.rows);
         }, (response) => {
             // request fail
             // [Todo] 显示加载内容为空组件

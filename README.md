@@ -6,7 +6,7 @@
 根据开发、生产环境的不同自动化编译打包，同时满足前后端分离后的模板管理
 
 - 基础：es6、stylus
-- vue生态：vue2.0、vue-router、vue-resource
+- vue生态：vue2.0、vue-router、vuex、vue-resource
 - UI组件：element-ui
 - 代码检测：eslint
 - 构建工具：webpack
@@ -135,7 +135,7 @@ module.exports = {
 
 ## 相关资源
 
-- vue 2.0中文：[http://vuefe.cn/](http://vuefe.cn/)
+- vue 2.0中文：[https://cn.vuejs.org](https://cn.vuejs.org)
 - vue-resource：[https://github.com/pagekit/vue-resource](https://github.com/pagekit/vue-resource)
 - element-ui：[http://element.eleme.io/](http://element.eleme.io/)
 - es6教程：[http://es6.ruanyifeng.com/](http://es6.ruanyifeng.com/)

@@ -6,6 +6,7 @@ const webpack = require('webpack');
 const opn = require('opn');
 const proxyMiddleware = require('http-proxy-middleware')
 const config = require('./env.conf');
+const pages = require('./page-entries');
 const webpackConfig = require('./webpack.dev.conf');
 
 if (!process.env.NODE_ENV) process.env.NODE_ENV = config.dev.env;
@@ -54,8 +55,8 @@ app.use(devMiddleware);
 app.use(hotMiddleware);
 
 // 静态文件
-const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);
-app.use(staticPath, express.static('./static'));
+// const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);
+// app.use(staticPath, express.static('/src/assets/'));
 
 module.exports = app.listen(port, function (err) {
     if (err) {

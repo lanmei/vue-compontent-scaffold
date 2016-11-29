@@ -10,6 +10,7 @@ export default {
 
 <style lang="stylus">
 .header-container
+    display: flex
     width: 100%
     height: 50px
     background: #414c61

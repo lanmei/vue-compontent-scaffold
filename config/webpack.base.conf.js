@@ -2,16 +2,14 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const config = require('./env.conf');
+const pages = require('./page-entries');
 
-if (process.env.PORT || config.dev.port) {
-    config.dev.assetsPublicPath = config.dev.assetsPublicPath + ':' + config.dev.port + '/';
-}
+config.dev.port = process.env.PORT ? process.env.PORT : config.dev.port;
+config.dev.assetsPublicPath = config.dev.assetsPublicPath + ':' + config.dev.port + '/';
 
 module.exports = {
     // 入口文件地址
-    entry: {
-        workbench: path.join(config.path.sourceRoot, '/main/workbench.js')
-    },
+    entry: pages.entries,
 
     // 输出文件
     output: {
@@ -46,9 +44,9 @@ module.exports = {
             // // stylus 文件编译
             { test: /\.sty$/, loader: 'style!css!stylus' },
             // 图片转化，小于8k自动转化成base64编码
-            { test: /\.(png|jpg|gif)$/, loader: 'url?limit=81920&name=images/[name].[ext]' },
+            { test: /\.(png|jpg|gif)$/, loader: 'url?limit=8192&name=images/[name].[ext]' },
             // 图标字体
-            { test: /\.(ttf|eot|svg|woff|woff2)+(\?\S*)?$/, loader: 'file?limit=10000&name=iconfont/[name].[ext]' }
+            { test: /\.(ttf|eot|svg|woff|woff2)+(\?\S*)?$/, loader: 'file?name=iconfont/[name].[ext]' }
         ]
     },
 
@@ -62,7 +60,7 @@ module.exports = {
 
     resolve: {
         // require时省略的扩展名
-        extensions: ['', '.js', '.vue'],
+        extensions: ['', '.js', '.vue', '.css'],
         // 别名，可以直接使用别名来代替设定的路径
         alias: {
             'vue': 'vue/dist/vue.js',

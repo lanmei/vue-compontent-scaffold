@@ -38,7 +38,6 @@ export default {
         this.$http.get(config.myCardListTabsUrl).then((response) => {
             // request success
             this.tabNumbers = response.data;
-            console.log(this.tabNumbers);
         });
     }
 };
