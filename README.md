@@ -20,14 +20,15 @@ $ npm install
 $ npm run dev
 ```
 
-会自动打开浏览器，输入http://localhost:8080/workbench.html即可访问
+会自动打开浏览器，输入http://localhost:8080/setting.html即可访问
 
 ## 目录结构
 ```
 ├── config                            构建脚本和配置目录
 │   ├── dev-client.js                   开发服务器热加载脚本，用于自动刷新浏览器
 │   ├── dev-server.js                   启动开发服务器脚本
-│   ├── env.conf.js                     环境参数配置 
+│   ├── env.conf.js                     环境参数配置
+│   ├── pages-entries.js                入口及模板配置
 │   ├── webpack.base.conf.js            webpack基础配置
 │   ├── webpack.conf.js                 webpack完整配置，使用webpack-dev-server时可使用
 │   ├── webpack.dev.conf.js             webpack开发环境配置
@@ -39,11 +40,14 @@ $ npm run dev
 │   ├── assets                          静态资源目录，如images
 │   ├── components                      组件目录
 │       ├── base                          基础组件目录，如button等
+│       ├── theme                         样式目录
 │       ├── workbench                     workbench页面组件目录
-│       └── workbench.vue                 workbench页面容器，root级组件  
+│       └── Workbench.vue                 workbench页面容器，root级组件  
 │   ├── config                          配置参数目录
 │   ├── main                            页面入口目录
-│   └── pages                           页面目录
+│   ├── router                          vue-router 目录
+│   ├── store                           vuex 目录
+│   └── pages                           页面目录(多页面使用不同的模板目录)
 ├── test                              测试目录
 │   └── unit                            单元测试目录
 │       ├── coverage                      单元测试覆盖率输出目录，执行单元测试后产生
@@ -52,6 +56,7 @@ $ npm run dev
 ├── .babelrc                          babel配置文件
 ├── .eslintignore                     eslint忽略目录配置文件
 ├── .eslintrc                         eslint检测规则配置文件
+├── index.html                        默认模板，不同的多页面模板可以自行配置，见 config/pages-entries
 ├── package.json
 └── README.md
 ```
@@ -68,7 +73,7 @@ $ npm run dev
 # [不推荐]开启本地开发服务器，区别是该热替换功能是基于webpack-dev-server，基于硬盘，速度较慢，没有配置mock服务
 
 $ npm run build  // 初次使用需要build一次生产环境
-$ npm run dev-server    // 输入http://localhost:8080/dist/workbench.html访问
+$ npm run dev-server    // 输入http://localhost:8080/dist/setting.html访问
 
 # 使用生产环境配置构建项目，构建后的文件会输出至dist
 
@@ -113,14 +118,14 @@ module.exports = {
 
 ## 联调方式
 
-前后端分离后，由于前后端的开发环境处于2台不同的机器上，前端的异步请求需要代理到后端机器中。 
+前后端分离后，由于前后端的开发环境处于2台不同的机器上，前端的异步请求需要代理到后端机器中。
 
 开发联调的时候，只需通过 proxy 参数运行 dev 脚本，代理至后端开发服务器，可修改 config/env.conf.js 中 dev.port 修改默认端口：
 
 `"dev": "node ./config/dev-server.js --proxy www.xxx.com:port"`
 
 生产部署时，可修改 config/env.conf.js 中 pro.assetsPublicPath 来配置上线 js、css 的 url。 然后执行
- 
+
 `$ npm run build`
 
 ## 部署方案
@@ -136,6 +141,8 @@ module.exports = {
 ## 相关资源
 
 - vue 2.0中文：[https://cn.vuejs.org](https://cn.vuejs.org)
+- vue-router 2.0中文：[http://router.vuejs.org/zh-cn/installation.html](http://router.vuejs.org/zh-cn/installation.html)
+- vuex 2.0中文：[https://vuefe.cn/vuex/actions.html](https://vuefe.cn/vuex/actions.html)
 - vue-resource：[https://github.com/pagekit/vue-resource](https://github.com/pagekit/vue-resource)
 - element-ui：[http://element.eleme.io/](http://element.eleme.io/)
 - es6教程：[http://es6.ruanyifeng.com/](http://es6.ruanyifeng.com/)
