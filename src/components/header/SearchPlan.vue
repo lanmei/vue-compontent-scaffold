@@ -1,5 +1,5 @@
 <template>
-    <div class="search-result-wrapper">
+    <div v-show="isShowCurrTab" class="search-result-wrapper">
         <div class="search-category-label">计划</div>
         <div class="search-plan-item search-plan-border">
             <div class="plan-content">
@@ -43,7 +43,12 @@
 <script>
 export default {
     name: 'search-plan',
-    props: ['planList']
+    props: ['planList', 'isShowTab'],
+    computed: {
+        isShowCurrTab () {
+            return this.isShowTab;
+        }
+    }
 };
 </script>
 

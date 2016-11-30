@@ -1,6 +1,6 @@
 <template>
     <transition name="custom-classes-transition" enter-active-class="animated bounceInRight" leave-active-class="animated bounceOutRight">
-        <div class="alm-search-container">
+        <div v-show="showPanel" class="alm-search-container">
             <div class="header-search-wrapper">
                 <el-input placeholder="请输入你要搜索的内容" v-model="input5" class="search-input">
                     <el-button slot="append" icon="search" @click="searchContent"></el-button>
@@ -10,26 +10,20 @@
                     <button type="button" name="button">@我</button>
                 </div>
                 <transition name="custom-classes-transition" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
-                    <!-- <div v-show="isHasSearchResult" class="search-result-list"> -->
-                    <div class="search-result-list">
+                    <div v-show="isHasSearchResult" class="search-result-list">
                         <div class="search-result-tag">
                             <label class="tag-label">搜索结果：</label>
-                            <el-tabs :active-name="first" class="tag-list">
-                                <el-tab-pane label="全部" name="first">
-                                    <search-card :cardList="cardList"></search-card>
-                                    <search-plan></search-plan>
-                                    <search-comment></search-comment>
-                                </el-tab-pane>
-                                <el-tab-pane label="卡片" name="second">
-                                    <search-card :cardList="cardList"></search-card>
-                                </el-tab-pane>
-                                <el-tab-pane label="计划" name="third">
-                                    <search-plan></search-plan>
-                                </el-tab-pane>
-                                <el-tab-pane label="评论" name="fourth">
-                                    <search-comment></search-comment>
-                                </el-tab-pane>
+                            <el-tabs :active-name="first" class="tag-list" @tab-click="switchTabs">
+                                <el-tab-pane :label="allTabName" name="all"></el-tab-pane>
+                                <el-tab-pane :label="cardTabName" name="card"></el-tab-pane>
+                                <el-tab-pane :label="planTabName" name="plan"></el-tab-pane>
+                                <el-tab-pane :label="commentTabName" name="comment"></el-tab-pane>
                             </el-tabs>
+                        </div>
+                        <div>
+                            <search-card :isShowTab="isShowCardTab" :cardList="cardList"></search-card>
+                            <search-plan :isShowTab="isShowPlanTab" :planList="planList"></search-plan>
+                            <search-comment :isShowTab="isShowCommontTab" :commentList="commentList"></search-comment>
                         </div>
                     </div>
                 </transition>
@@ -52,13 +46,46 @@ export default {
     data () {
         return {
             isHasSearchResult: false,    // 显示查询结果
-            cardList: []   // 查询卡片类型的结果
+            isShowCardTab: true,    // 是否显示 card tab 对应的组件
+            isShowPlanTab: true,    // 是否显示 plan tab 对应的组件
+            isShowCommontTab: true, // 是否显示 comment tab 对应的组件
+            // 查询卡片列表
+            cardList: {
+                total: 0,
+                result: []
+            },
+            // 查询计划列表
+            planList: {
+                total: 0,
+                result: []
+            },
+            // 查询评论列表
+            commentList: {
+                total: 0,
+                result: []
+            }
         };
     },
     computed: {
-        // 显示 search panel
-        isShowPanel () {
-            return this.showPanel;
+        // 搜索结果【全部】tab
+        allTabName () {
+            const total = this.cardList.total + this.planList.total + this.commentList.total;
+            return '全部 (' + total + ')';
+        },
+        // 搜索结果【卡片】tab
+        cardTabName () {
+            this.cardList.total = this.cardList.total || 0;
+            return '卡片 (' + this.cardList.total + ')';
+        },
+        // 搜索结果【计划】tab
+        planTabName () {
+            this.planList.total = this.planList.total || 0;
+            return '计划 (' + this.planList.total + ')';
+        },
+        // 搜索结果【评论】tab
+        commentTabName () {
+            this.commentList.total = this.commentList.total || 0;
+            return '评论 (' + this.commentList.total + ')';
         }
     },
     methods: {
@@ -67,8 +94,7 @@ export default {
             // 根据输入 ajax 查询结果
             this.$http.get(config.searchUrl).then((response) => {
                 // request success
-                this.cardList = response.data.result;
-                console.log(this.cardList);
+                this.cardList = response.data;
             });
             // 显示查询结果
             this.isHasSearchResult = true;
@@ -76,6 +102,32 @@ export default {
         // 关闭 search panel
         closeSearchPanel () {
             this.$parent.closeSearchPanel();
+        },
+        // 切换 tab 操作对应组件的显示
+        // 显示当前的 tab 内容，隐藏其它的 tab 内容
+        // 默认即显示【全部】 tab
+        switchTabs (tab) {
+            switch (tab.name) {
+                case 'card':
+                    this.isShowCardTab = true;
+                    this.isShowPlanTab = false;
+                    this.isShowCommontTab = false;
+                    break;
+                case 'plan':
+                    this.isShowCardTab = false;
+                    this.isShowPlanTab = true;
+                    this.isShowCommontTab = false;
+                    break;
+                case 'comment':
+                    this.isShowCardTab = false;
+                    this.isShowPlanTab = false;
+                    this.isShowCommontTab = true;
+                    break;
+                default:
+                    this.isShowCardTab = true;
+                    this.isShowPlanTab = true;
+                    this.isShowCommontTab = true;
+            }
         }
     }
 };
@@ -162,7 +214,7 @@ export default {
 
     .search-category-label
         margin-bottom: 15px
-        
+
 .search-more
     margin-top: 10px
     display: flex

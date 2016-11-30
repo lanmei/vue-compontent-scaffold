@@ -52,7 +52,7 @@ export default {
     methods: {
         // 点击搜索，弹出 search panel
         enterSearch () {
-            // [TODO] enter 后 slide 全屏
+            // enter 后 slide 全屏
             this.showHeaderSearchPanel = true;
         },
         // 映射 showHeaderProjectPanel 到 this.$store.dispath(changeHeaderProjectPanelState)

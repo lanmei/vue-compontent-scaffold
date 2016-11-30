@@ -1,5 +1,5 @@
 <template>
-    <div class="search-result-wrapper">
+    <div v-show="isShowCurrTab" class="search-result-wrapper">
         <div class="search-category-label">评论</div>
         <div class="search-comment-item">
             <div class="comment-author">
@@ -48,7 +48,12 @@
 <script>
 export default {
     name: 'search-comment',
-    props: ['commentList']
+    props: ['commentList', 'isShowTab'],
+    computed: {
+        isShowCurrTab () {
+            return this.isShowTab;
+        }
+    }
 };
 </script>
 

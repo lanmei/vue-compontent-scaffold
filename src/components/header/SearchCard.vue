@@ -1,8 +1,8 @@
 <template>
-    <div class="search-result-wrapper">
+    <div v-show="isShowCurrTab" class="search-result-wrapper">
         <div class="search-category-label">卡片</div>
-        <div v-for="card in cardList" class="search-card-item search-card-border">
-            <div class="card-item-wrapper">
+        <div v-for="(card, index) in cardList.result" class="search-card-item">
+            <div class="card-item-wrapper" :class="[index === 0 ? 'card-item-border' : '']">
                 <div class="card-info">
                     <span class="card-wrapper-left">#{{ card.id }}</span>
                     <div class="card-wrapper-right">{{ card.name }}</div>
@@ -13,19 +13,47 @@
                 </div>
             </div>
         </div>
-        <div class="search-more"><span @click="searchMore">加载更多<i class="fa fa-angle-down"></i></span></div>
+        <div v-show="isShowLoadMore" class="search-more"><span @click="searchMore">加载更多<i class="fa fa-angle-down"></i></span></div>
     </div>
 </template>
 
 <script>
-// import * as config from 'config/http';
+import * as config from 'config/http';
 
 export default {
     name: 'search-card',
-    props: ['cardList'],
+    props: ['cardList', 'isShowTab'],
+    data () {
+        return {
+            currPage: 1,    // 当前加载的次数
+            rowCount: 10   // 每次加载的数量
+        };
+    },
+    computed: {
+        // 当 cardList 为空时，不显示
+        isShowCurrTab () {
+            return this.isShowTab && this.cardList.result && this.cardList.result.length !== 0;
+        },
+        // 是否显示加载更多
+        isShowLoadMore () {
+            return this.cardList.total / this.rowCount > this.currPage;
+        }
+    },
     methods: {
-        // [TODO] 加载更多
+        // 加载更多
         searchMore () {
+            this.$http.get(config.searchUrl).then((response) => {
+                // request success
+                if (response.data.result) {
+                    this.currPage++;
+                    for (const obj of response.data.result) {
+                        this.cardList.result.push(obj);
+                    }
+                    this.cardList.total = response.data.total;
+                } else {
+                    this.isShowLoadMore = false;
+                }
+            });
         }
     }
 };
@@ -47,6 +75,9 @@ export default {
         left: 0
         width: 4px
         height: 100%
+
+.card-item-border
+    border-top: 1px solid #e6e9ed
 
 .card-item-wrapper
     width: 100%

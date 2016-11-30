@@ -22,7 +22,7 @@ pageArr.forEach((page) => {
     templates.push({
         title: 'Wizard',
         filename: path.join(config.path.assetsRoot, page + '.html'),
-        template: path.join(config.path.sourceRoot, 'pages/' + page + '.html'),
+        template: path.join(__dirname, '../index.html'),
         chunks: [page]
     })
 });
